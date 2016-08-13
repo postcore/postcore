@@ -12,8 +12,6 @@ require('base', 'Base')
 require('base-plugins', 'plugins')
 require('base-plugins-enhanced', 'pluginsEnhanced')
 require('lazy-utils', 'utils')
-require('define-property', 'define')
-require('delegate-properties', 'delegate')
 require = fn // eslint-disable-line no-undef, no-native-reassign
 
 /**
