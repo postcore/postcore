@@ -16,16 +16,38 @@ npm i postcore --save
 const postcore = require('postcore')
 ```
 
-### [.process](index.js#L73)
+### [.parse](index.js#L52)
 
-Passing `input` to `.parse` method and then
-pass parsed data to the plugins.
+> Parse given `input` using `this.options.parser`.
 
 **Params**
 
 * `input` **{String|Object}**: input text to be parsed or `options` object    
 * `options` **{Object}**: options object merged into `this.options`    
-* `returns` **{[type]}**  
+* `returns` **{PostCore}**  
+
+### [.process](index.js#L84)
+
+> Passing `input` to `.parse` method and then
+pass parsed data to the plugins. After all, pass it
+to the `.stringify` (so, `this.options.stringifier`)
+and return Promise with the result object.
+
+**Params**
+
+* `input` **{String|Object}**: input text to be parsed or `options` object    
+* `options` **{Object}**: options object merged into `this.options`    
+* `returns` **{PostCore}**  
+
+### [.stringify](index.js#L104)
+
+> Stringify given `ast` to string, using `this.options.stringifier`.
+
+**Params**
+
+* `ast` **{Object}**: object or array tree, ast to be stringified    
+* `options` **{Object}**: options object merged into `this.options`    
+* `returns` **{PostCore}**  
 
 ## Contributing
 Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/postcore/postcore/issues/new).  

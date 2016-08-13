@@ -39,6 +39,15 @@ function PostCore (plugins, options) {
 
 Base.extend(PostCore)
 
+/**
+ * > Parse given `input` using `this.options.parser`.
+ *
+ * @name   .parse
+ * @param  {String|Object} `input` input text to be parsed or `options` object
+ * @param  {Object} `options` options object merged into `this.options`
+ * @return {PostCore}
+ * @api public
+ */
 PostCore.prototype.parse = function parse (input, options) {
   if (utils.isObject(input)) {
     options = input
@@ -60,13 +69,15 @@ PostCore.prototype.parse = function parse (input, options) {
 }
 
 /**
- * Passing `input` to `.parse` method and then
- * pass parsed data to the plugins.
+ * > Passing `input` to `.parse` method and then
+ * pass parsed data to the plugins. After all, pass it
+ * to the `.stringify` (so, `this.options.stringifier`)
+ * and return Promise with the result object.
  *
  * @name   .process
  * @param  {String|Object} `input` input text to be parsed or `options` object
  * @param  {Object} `options` options object merged into `this.options`
- * @return {[type]}
+ * @return {PostCore}
  * @api public
  */
 
@@ -80,6 +91,15 @@ PostCore.prototype.process = function process (input, options) {
   })
 }
 
+/**
+ * > Stringify given `ast` to string, using `this.options.stringifier`.
+ *
+ * @name   .stringify
+ * @param  {Object} `ast` object or array tree, ast to be stringified
+ * @param  {Object} `options` options object merged into `this.options`
+ * @return {PostCore}
+ * @api public
+ */
 PostCore.prototype.stringify = function stringify (ast, options) {
   if (!utils.isObject(ast)) {
     throw new TypeError('.stringify: expect `ast` or `this.cache.ast` to be an object')
