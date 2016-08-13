@@ -10,6 +10,18 @@
 var utils = require('./utils')
 var Base = utils.Base.namespace('cache')
 
+/**
+ * > Initialize `PostCore` with `plugins` and `options`.
+ * Plugins can also be passed in `options.plugins`.
+ * Notice that `PostCore` is built on [base][], so you have
+ * access to all of its builtin methods like `.use`, `.set`, `.get`
+ * `.has`, `.define`, `.visit` and so on.
+ *
+ * @param {Array|Object} `plugins` plugins to be used, or `options` object
+ * @param {Object} `options` options to control some stuff
+ * @api public
+ */
+
 function PostCore (plugins, options) {
   if (!(this instanceof PostCore)) {
     return new PostCore(plugins, options)
@@ -45,9 +57,10 @@ Base.extend(PostCore)
  * @name   .parse
  * @param  {String|Object} `input` input text to be parsed or `options` object
  * @param  {Object} `options` options object merged into `this.options`
- * @return {PostCore}
+ * @return {PostCore} instance for chaining
  * @api public
  */
+
 PostCore.prototype.parse = function parse (input, options) {
   if (utils.isObject(input)) {
     options = input
@@ -77,7 +90,7 @@ PostCore.prototype.parse = function parse (input, options) {
  * @name   .process
  * @param  {String|Object} `input` input text to be parsed or `options` object
  * @param  {Object} `options` options object merged into `this.options`
- * @return {PostCore}
+ * @return {PostCore} instance for chaining
  * @api public
  */
 
@@ -97,9 +110,10 @@ PostCore.prototype.process = function process (input, options) {
  * @name   .stringify
  * @param  {Object} `ast` object or array tree, ast to be stringified
  * @param  {Object} `options` options object merged into `this.options`
- * @return {PostCore}
+ * @return {PostCore} instance for chaining
  * @api public
  */
+
 PostCore.prototype.stringify = function stringify (ast, options) {
   if (!utils.isObject(ast)) {
     throw new TypeError('.stringify: expect `ast` or `this.cache.ast` to be an object')
@@ -113,5 +127,18 @@ PostCore.prototype.stringify = function stringify (ast, options) {
   return this.cache.content
 }
 
+/**
+ * > Expose `PostCore` instance.
+ *
+ * @type {PostCore}
+ * @private
+ */
 module.exports = new PostCore()
+
+/**
+ * > Expose `PostCore` constructor.
+ *
+ * @type {Function}
+ * @private
+ */
 module.exports.PostCore = PostCore

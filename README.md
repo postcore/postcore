@@ -16,7 +16,20 @@ npm i postcore --save
 const postcore = require('postcore')
 ```
 
-### [.parse](index.js#L52)
+### [PostCore](index.js#L25)
+
+> Initialize `PostCore` with `plugins` and `options`.
+Plugins can also be passed in `options.plugins`.
+Notice that `PostCore` is built on [base][], so you have
+access to all of its builtin methods like `.use`, `.set`, `.get`
+`.has`, `.define`, `.visit` and so on.
+
+**Params**
+
+* `plugins` **{Array|Object}**: plugins to be used, or `options` object    
+* `options` **{Object}**: options to control some stuff    
+
+### [.parse](index.js#L64)
 
 > Parse given `input` using `this.options.parser`.
 
@@ -24,9 +37,9 @@ const postcore = require('postcore')
 
 * `input` **{String|Object}**: input text to be parsed or `options` object    
 * `options` **{Object}**: options object merged into `this.options`    
-* `returns` **{PostCore}**  
+* `returns` **{PostCore}**: instance for chaining  
 
-### [.process](index.js#L84)
+### [.process](index.js#L97)
 
 > Passing `input` to `.parse` method and then
 pass parsed data to the plugins. After all, pass it
@@ -37,9 +50,9 @@ and return Promise with the result object.
 
 * `input` **{String|Object}**: input text to be parsed or `options` object    
 * `options` **{Object}**: options object merged into `this.options`    
-* `returns` **{PostCore}**  
+* `returns` **{PostCore}**: instance for chaining  
 
-### [.stringify](index.js#L104)
+### [.stringify](index.js#L117)
 
 > Stringify given `ast` to string, using `this.options.stringifier`.
 
@@ -47,7 +60,7 @@ and return Promise with the result object.
 
 * `ast` **{Object}**: object or array tree, ast to be stringified    
 * `options` **{Object}**: options object merged into `this.options`    
-* `returns` **{PostCore}**  
+* `returns` **{PostCore}**: instance for chaining  
 
 ## Contributing
 Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/postcore/postcore/issues/new).  
@@ -102,3 +115,4 @@ But before doing anything, please read the [CONTRIBUTING.md](./CONTRIBUTING.md) 
 [new-message-url]: https://github.com/tunnckoCore/ama
 [new-message-img]: https://img.shields.io/badge/ask%20me-anything-green.svg
 
+[base]: https://github.com/node-base/base
