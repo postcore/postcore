@@ -37,7 +37,7 @@ access to all of its builtin methods like `.use`, `.set`, `.get`
 
 * `input` **{String|Object}**: input text to be parsed or `options` object    
 * `options` **{Object}**: options object merged into `this.options`    
-* `returns` **{PostCore}**: instance for chaining  
+* `returns` **{Mixed}**: the result of the given parser  
 
 ### [.process](index.js#L97)
 
@@ -50,7 +50,7 @@ and return Promise with the result object.
 
 * `input` **{String|Object}**: input text to be parsed or `options` object    
 * `options` **{Object}**: options object merged into `this.options`    
-* `returns` **{PostCore}**: instance for chaining  
+* `returns` **{Promise}**: with object containing metadata and stringified result  
 
 ### [.stringify](index.js#L117)
 
@@ -58,9 +58,9 @@ and return Promise with the result object.
 
 **Params**
 
-* `ast` **{Object}**: object or array tree, ast to be stringified    
+* `ast` **{Array|Object}**: object or array tree, ast to be stringified    
 * `options` **{Object}**: options object merged into `this.options`    
-* `returns` **{PostCore}**: instance for chaining  
+* `returns` **{Mixed}**: the result of the given stringifier  
 
 ## Contributing
 Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/postcore/postcore/issues/new).  

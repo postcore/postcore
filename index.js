@@ -57,7 +57,7 @@ Base.extend(PostCore)
  * @name   .parse
  * @param  {String|Object} `input` input text to be parsed or `options` object
  * @param  {Object} `options` options object merged into `this.options`
- * @return {PostCore} instance for chaining
+ * @return {Mixed} the result of the given parser
  * @api public
  */
 
@@ -90,7 +90,7 @@ PostCore.prototype.parse = function parse (input, options) {
  * @name   .process
  * @param  {String|Object} `input` input text to be parsed or `options` object
  * @param  {Object} `options` options object merged into `this.options`
- * @return {PostCore} instance for chaining
+ * @return {Promise} with object containing metadata and stringified result
  * @api public
  */
 
@@ -108,9 +108,9 @@ PostCore.prototype.process = function process (input, options) {
  * > Stringify given `ast` to string, using `this.options.stringifier`.
  *
  * @name   .stringify
- * @param  {Object} `ast` object or array tree, ast to be stringified
+ * @param  {Array|Object} `ast` object or array tree, ast to be stringified
  * @param  {Object} `options` options object merged into `this.options`
- * @return {PostCore} instance for chaining
+ * @return {Mixed} the result of the given stringifier
  * @api public
  */
 
