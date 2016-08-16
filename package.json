@@ -1,6 +1,6 @@
 {
   "name": "postcore",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Processor engine for Post* family like PostCSS, PostHTML and PostJSON.",
   "repository": "postcore/postcore",
   "author": "Charlike Mike Reagent <@tunnckoCore> (http://www.tunnckocore.tk)",
