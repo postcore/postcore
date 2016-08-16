@@ -129,6 +129,36 @@ PostCore.prototype.stringify = function stringify (ast, options) {
 }
 
 /**
+ * > Add plugin to the stack. It follows the "smart" plugins
+ * concept coming from [base][] project, because `PostCore` is
+ * built on it internally, so you can use any of its plugins here.
+ *
+ * **Example**
+ *
+ * ```js
+ * var postcore = require('postcore')
+ *
+ * postcore
+ *   .use([plugin, plugin, plugin], { foo: 'bar' })
+ *   .use(function (app) {
+ *     // `app` and `this` context are the instance of `postcore`
+ *     return function plugin (ctx) {
+ *       // `ctx` and `this` are the same and comes internally
+ *       // from `.process` - it is the `this.cache` object
+ *       // which can be used for sharing context between plugins.
+ *     }
+ *   })
+ *   .process('some string', { options: 'foo' })
+ * ```
+ *
+ * @name   .use
+ * @param  {Function|Array} `fn` plugin function or array of plugins
+ * @param  {Object} `opts` options merged with the `this.options`
+ * @return {PostCore} instance for chaining
+ * @api public
+ */
+
+/**
  * > Expose `PostCore` instance.
  *
  * @type {PostCore}

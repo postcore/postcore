@@ -29,7 +29,7 @@ access to all of its builtin methods like `.use`, `.set`, `.get`
 * `plugins` **{Array|Object}**: plugins to be used, or `options` object    
 * `options` **{Object}**: options to control some stuff    
 
-### [.parse](index.js#L64)
+### [.parse](index.js#L65)
 
 > Parse given `input` using `this.options.parser`.
 
@@ -39,7 +39,7 @@ access to all of its builtin methods like `.use`, `.set`, `.get`
 * `options` **{Object}**: options object merged into `this.options`    
 * `returns` **{Mixed}**: the result of the given parser  
 
-### [.process](index.js#L97)
+### [.process](index.js#L98)
 
 > Passing `input` to `.parse` method and then
 pass parsed data to the plugins. After all, pass it
@@ -52,7 +52,7 @@ and return Promise with the result object.
 * `options` **{Object}**: options object merged into `this.options`    
 * `returns` **{Promise}**: with object containing metadata and stringified result  
 
-### [.stringify](index.js#L117)
+### [.stringify](index.js#L118)
 
 > Stringify given `ast` to string, using `this.options.stringifier`.
 
@@ -61,6 +61,33 @@ and return Promise with the result object.
 * `ast` **{Array|Object}**: object or array tree, ast to be stringified    
 * `options` **{Object}**: options object merged into `this.options`    
 * `returns` **{Mixed}**: the result of the given stringifier  
+
+### [.use](index.js#L161)
+> Add plugin to the stack. It follows the "smart" plugins concept coming from [base][] project, because `PostCore` is built on it internally, so you can use any of its plugins here.
+
+**Params**
+
+* `fn` **{Function|Array}**: plugin function or array of plugins    
+* `opts` **{Object}**: options merged with the `this.options`    
+* `returns` **{PostCore}**: instance for chaining  
+
+**Example**
+
+```js
+var postcore = require('postcore')
+
+postcore
+  .use([plugin, plugin, plugin], { foo: 'bar' })
+  .use(function (app) {
+    // `app` and `this` context are the instance of `postcore`
+    return function plugin (ctx) {
+      // `ctx` and `this` are the same and comes internally
+      // from `.process` - it is the `this.cache` object
+      // which can be used for sharing context between plugins.
+    }
+  })
+  .process('some string', { options: 'foo' })
+```
 
 ## Contributing
 Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/postcore/postcore/issues/new).  
