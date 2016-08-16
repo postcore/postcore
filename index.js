@@ -47,7 +47,7 @@ function PostCore (plugins, options) {
 
   this.options = utils.extend({}, this.options, options)
   this.plugins = utils.arrayify(plugins).concat(this.options.plugins)
-  this.cache.input = this.options.input || null
+  this.file = this.options.contents ? utils.VFile(this.options.contents) : null
 }
 
 Base.extend(PostCore)
@@ -56,30 +56,22 @@ Base.extend(PostCore)
  * > Parse given `input` using `this.options.parser`.
  *
  * @name   .parse
- * @param  {String|Object} `input` input text to be parsed or `options` object
+ * @param  {VFile|String} `input` [vfile][] object or string
  * @param  {Object} `options` options object merged into `this.options`
  * @return {Mixed} the result of the given parser
  * @api public
  */
 
 PostCore.prototype.parse = function parse (input, options) {
-  if (utils.isObject(input)) {
-    options = input
-    input = this.cache.input || null
-  }
-  if (typeof input !== 'string') {
-    throw new TypeError('.parse: expect `input` or `this.cache.input` to be a string.')
-  }
-
-  this.cache.input = input
+  this.file = utils.VFile(input)
   this.options = utils.extend({}, this.options, options)
 
   if (typeof this.options.parser !== 'function') {
     throw new TypeError('.parse: expect `this.options.parser` to be a function')
   }
-  var ast = this.options.parser.call(this, this.cache.input, this.options)
-  this.cache.ast = ast || this.cache.ast
-  return this.cache.ast
+  var ast = this.options.parser.call(this, this.file, this.options)
+  this.file.ast = ast || this.file.ast
+  return this.file
 }
 
 /**
@@ -89,43 +81,48 @@ PostCore.prototype.parse = function parse (input, options) {
  * and return Promise with the result object.
  *
  * @name   .process
- * @param  {String|Object} `input` input text to be parsed or `options` object
+ * @param  {VFile|String} `input` [vfile][] object or string
  * @param  {Object} `options` options object merged into `this.options`
  * @return {Promise} with object containing metadata and stringified result
  * @api public
  */
 
 PostCore.prototype.process = function process (input, options) {
-  var self = this
-  return new Promise(function (resolve) {
-    self.parse(input, options)
-    self.run(self.cache)
-    self.stringify(self.cache.ast, self.options)
-    resolve(self.cache)
-  })
+  this.parse(input, options)
+  this.run(this.file)
+  this.stringify(this.file)
+  return this.file
+  // var self = this
+  // return new Promise(function (resolve) {
+  //   self.parse(input, options)
+  //   self.run(self.file)
+  //   self.stringify(self.cache.ast, self.options)
+  //   resolve(self.cache)
+  // })
 }
 
 /**
  * > Stringify given `ast` to string, using `this.options.stringifier`.
  *
  * @name   .stringify
- * @param  {Array|Object} `ast` object or array tree, ast to be stringified
+ * @param  {VFile|String} `file` [vfile][] object or string
  * @param  {Object} `options` options object merged into `this.options`
  * @return {Mixed} the result of the given stringifier
  * @api public
  */
 
-PostCore.prototype.stringify = function stringify (ast, options) {
-  if (!utils.isObject(ast)) {
-    throw new TypeError('.stringify: expect `ast` or `this.cache.ast` to be an object')
+PostCore.prototype.stringify = function stringify (file, options) {
+  if (!utils.isObject(file)) {
+    throw new TypeError('.stringify: expect `file` to be VFile object')
   }
   this.options = utils.extend({}, this.options, options)
 
   if (typeof this.options.stringifier !== 'function') {
     throw new TypeError('.parse: expect `this.options.stringifier` to be a function')
   }
-  this.cache.content = this.options.stringifier.call(this, ast, this.options)
-  return this.cache.content
+  var contents = this.options.stringifier.call(this, file, this.options)
+  this.file.contents = contents || this.file.contents
+  return this.file
 }
 
 /**

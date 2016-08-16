@@ -13,9 +13,10 @@
   "dependencies": {
     "base": "^0.11.1",
     "base-plugins": "^0.4.13",
-    "base-plugins-enhanced": "^0.1.0",
+    "base-plugins-enhanced": "^0.1.2",
     "lazy-cache": "^2.0.1",
-    "lazy-utils": "^1.0.1"
+    "lazy-utils": "^1.0.1",
+    "vfile": "github:wooorm/vfile#proposal"
   },
   "devDependencies": {
     "mukla": "^0.4.1",

@@ -42,22 +42,25 @@ var fs = require('fs')
 postcore
   .use([parser(), stringifier()])
   .use(function (app) {
-    return function (ctx) {
+    return function (file) {
       app.set('ast.qux', 123)
-      ctx.ast.version = '1.2.3'
-      ctx.ast.foo = 'bar'
-      this.messages = this.messages || []
-      this.messages.push({
-        name: 'custom-plugin',
-        report: 'okey'
-      })
+      file.ast.version = '1.2.3'
+      file.ast.foo = 'bar'
+      // file.warn('War~~ning!', {line: 2, column: 4})
+      // this.messages = this.messages || []
+      // this.messages.push({
+      //   name: 'custom-plugin',
+      //   report: 'okey'
+      // })
     }
   })
-  .process(fs.readFileSync('./package.json', 'utf8'))
-  .then(function (result) {
-    console.log(result.content)
-    console.log('msgs:', result.messages)
-  }, console.error)
+
+var file = postcore.process(fs.readFileSync('./package.json', 'utf8'))
+console.log(file)
+  // .then(function (result) {
+  //   console.log(result.content)
+  //   console.log('msgs:', result.messages)
+  // }, console.error)
 
 /**
  * [parser description]
@@ -65,14 +68,14 @@ postcore
  * @return {[type]}      [description]
  */
 function parser (opts) {
-  return function parse (input, options) {
-    // if used as plugin, so `input` will be `app/this`
-    if (input && input.isPostCore && input.isBase) {
-      this.options.parser = parse
+  return function parse (file, options) {
+    // if used as plugin, so `file` will be `app/this`
+    if (file && file.isPostCore && file.isBase) {
+      file.options.parser = parse
       return
     }
-    if (typeof input !== 'string') {
-      throw new TypeError('parser expect `input` to be a string')
+    if (utils.isBuffer(file) && typeof file == 'string') {
+      file = utils.VFile(file)
     }
     // do the parser stuff below
     this.options = utils.extend({}, options, opts)
@@ -80,7 +83,7 @@ function parser (opts) {
     // this.option(options).option.create().merge(opts)
 
     // passed to `this.stringify` (aka this.options.stringifier)
-    return JSON.parse(input)
+    return JSON.parse(file.contents)
   }
 }
 
@@ -90,16 +93,24 @@ function parser (opts) {
  * @return {[type]}      [description]
  */
 function stringifier (opts) {
-  return function stringify (ast, options) {
+  return function stringify (file, options) {
     // if used as plugin, so `input` will be `app/this`
-    if (ast && ast.isPostCore && ast.isBase) {
-      this.options.stringifier = stringify
+    if (file && file.isPostCore && file.isBase) {
+      file.options.stringifier = stringify
       return
     }
     // do the stringifier stuff below
     this.options = utils.extend({}, options, opts)
     // @todo dont forget for the V8's optimization
     // for single argument
-    return JSON.stringify(ast, null, this.options.indent || 0)
+    return JSON.stringify(file.ast, null, this.options.indent || 0)
   }
 }
+
+
+
+/**
+ * example
+ */
+
+// postcore.process('foo bar baz')
