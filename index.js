@@ -35,6 +35,7 @@ function PostCore (plugins, options) {
    * Base specific loading
    */
   Base.call(this)
+  this.isApp = true
   this.is('PostCore')
   // this.use(utils.options()) // there's a bug in `base-option`
   this.use(utils.plugins())
