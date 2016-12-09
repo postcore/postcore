@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "mukla": "^0.4.1",
-    "pre-commit": "*"
+    "pre-commit": ">=1.2.0"
   },
   "files": [
     "index.js",
