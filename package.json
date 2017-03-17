@@ -19,7 +19,7 @@
     "vfile": "github:wooorm/vfile#proposal"
   },
   "devDependencies": {
-    "mukla": "^0.4.1",
+    "mukla": "^0.4.9",
     "pre-commit": "*"
   },
   "files": [
